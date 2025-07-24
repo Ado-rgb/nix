@@ -16,12 +16,11 @@ exports.default = {
     try {
       const data = await ocean(text, 'mp4', quality);
 
-      const caption = `☊ *Título* »${data.title}\n✏ *Calidad* » ${quality}p`;
+      const caption = `☊ *Título* » ${data.title}\n✏ *Calidad* » ${quality}p`;
 
       await conn.adReply(m.chat, caption, data.thumbnail || '', m, { showAds: true });
       await conn.sendFile(m.chat, data.link, `${data.title}.mp4`, m, {
-        mimetype: 'video/mp4',
-        caption
+        mimetype: 'video/mp4'
       });
     } catch (error) {
       m.reply('Error al descargar el video. Verifique que el enlace sea correcto.');
