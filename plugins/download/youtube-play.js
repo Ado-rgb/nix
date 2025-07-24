@@ -5,7 +5,7 @@ const ocean = require('../../lib/src/scraper/ocean.js');
 exports.default = {
    names: ['Downloader'],
    tags: ['play', 'song', 'canción'],
-   command: ['play', 'song', 'canción'],
+   command: ['play', 'song', 'canción', 'Play'],
    start: async (m, {
       conn,
       text,
@@ -23,13 +23,13 @@ exports.default = {
       let thumb = `https://i.ytimg.com/vi/${url.videoId}/0.jpg`;
       let result = '';
 
-      result += `🎧 〔 𝙋𝙇𝘼𝙔 〕\n\n`;
-      result += `🔹 *Título:* ${url.title}\n`;
+      result += `\`🧩 Adonix Play\`\n\n`;
+      result += `🎋 *Título:* ${url.title}\n`;
       result += `⏱ *Duración:* ${url.timestamp}\n`;
       result += `👁 *Vistas:* ${url.views.toLocaleString()}\n`;
       result += `📺 *Canal:* ${url.author.name}\n`;
-      result += `🔗 *Link del canal:* ${url.author.url}\n`;
-      result += `🔗 *URL del video:* ${url.url}\n\n`;
+      result += `🔗 *Canal URL »* ${url.author.url}\n`;
+      result += `🔰 *Video »* ${url.url}\n\n`;
       result += `⏳ *Cargando audio, espera un momento...*`;
 
       const audio = await savetube.download(link, '144').catch(async () => await ocean(link, 'mp3'));
