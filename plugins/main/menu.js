@@ -16,7 +16,7 @@ exports.default = {
       const header_sub = `LISTA DE MENÚ`;
       const header = `┌────`;
       const middle = `│`;
-      const pointer = `⭓`;
+      const pointer = `🎋`;
       const bottom = `└──────────⭓\n`;
       const left = `『`;
       const right = `』`;
@@ -30,7 +30,7 @@ exports.default = {
       info += `${side} 👋 ¡Hola ${waktu.suasana.charAt(0).toUpperCase() + waktu.suasana.slice(1)}!\n${side} Usuario: @${m.sender.split('@')[0]} 📗\n`;
       info += `${side} 📊 Total de comandos usados:\n${side} Tú: ${db.users[m.sender].hitCmd} veces\n${side}${garis}\n`;
       info += `${side} 👤 Propietario: +${setting.contact}\n`;
-      info += `${side} 🌐 Instagram: ${sosmed}\n${side}${garis}\n`;
+      info += `${side}\n${side}${garis}\n`;
       info += `${side} 📡 Estadísticas de red:\n${side} 📥 Descargas: ${Download}\n${side} 📤 Subidas: ${Upload}\n${side}${garis}\n`;
       info += `${side} ${lolim} = Límite\n${side} ${loprem} = Premium\n${bot}${garis}`;
 
