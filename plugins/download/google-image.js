@@ -45,9 +45,7 @@ exports.default = {
 
       m.react('🔎');
 
-      conn.sendButton(m.chat, caption, imagen, m, [
-         ['Siguiente', `${prefix}${command} ${text}`]
-      ]);
+      await conn.sendFile(m.chat, imagen, '', m, { caption });
    },
    limit: false
 };
