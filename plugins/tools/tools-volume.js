@@ -2,23 +2,21 @@ exports.default = {
    names: ['Tools'],
    tags: ['volume'],
    command: ['volume', 'vol'],
-   start: async (m, {
-      conn,
-      text,
-      prefix,
-      command,
-      mime,
-      quoted,
-      Format
-   }) => {
+   start: async (m, { conn, text, prefix, command, mime, quoted, Format }) => {
       if (/audio|video|document/.test(mime)) {
-         m.reply(loading)
-         const buffer = await quoted.download()
+         m.reply('⏳ Ajustando volumen...');
+         const buffer = await quoted.download();
          const media = await Format.volume(buffer, text);
          conn.sendFile(m.chat, media, '', m);
       } else {
-         return m.reply(`balas audio atau kirim audio yang mau volume nya di naikan atau di turunkan \n\nmenggunakan titik(.) untuk naik atau turun satu tingkat\n\ncontoh untuk naik volume: ${prefix+command} 1.2, 1.5, 2.0 dan seterusnya\n\ncontoh untuk turun volume: ${prefix+command} 0.9, 0.8, 0.5 dan seterusnya\nrekomen dari 0\n\ncontoh: ${prefix+command} 1.4\n\nkalo volume nya lagi misalnya setelah dinaikan / diturunkan tapi mau dinaikan / diturunkan lagi \npada original file / audio nya ya agar bersih hasilnya ny`)
+         return m.reply(
+            `⚠️ Responde a un audio o envía uno para ajustar su volumen.\n\n` +
+            `• Usa valores como: \`1.2\`, \`1.5\`, \`2.0\` para subir volumen.\n` +
+            `• Usa valores como: \`0.9\`, \`0.8\`, \`0.5\` para bajarlo.\n\n` +
+            `Ejemplo para subir volumen: *${prefix + command} 1.4*\n` +
+            `Se recomienda trabajar siempre con el archivo original para mejor calidad.`
+         );
       }
    },
-   limit: 2
+   limit: false
 };
