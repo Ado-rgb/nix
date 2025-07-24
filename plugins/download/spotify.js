@@ -9,7 +9,7 @@ exports.default = {
       command,
       Format
    }) => {
-      if (!text) return m.reply(`contoh ${prefix+command} https://open.spotify.com/track/0X9hepyA3YD1qW2zZbet6V?si=iBA644naR3aKiJ2xSZt2Cw`);      
+      if (!text) return m.reply(`Ejemplo : ${prefix+command} https://open.spotify.com/track/0X9hepyA3YD1qW2zZbet6V?si=iBA644naR3aKiJ2xSZt2Cw`);      
       const { metadata, download } = await Format.Scraper.spotify(text);
       const { album, album_artist, album_name, artist, cover_url, name } = metadata;
       const { file_url } = download;
@@ -19,7 +19,7 @@ exports.default = {
       caption += `Album Name: ${album_name}\n`
       caption += `Artis: ${artist}\n`
       caption += `Username: ${name}\n\n`
-      caption += `Sending File...`
+      caption += `Enviando...`
       conn.adReply(m.chat, caption, cover_url, m);   
       conn.sendFile(m.chat, file_url, '', m, {
          document: true,
