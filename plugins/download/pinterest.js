@@ -11,7 +11,7 @@ exports.default = {
 
       if (!images.length) return m.reply('⚠️ No se encontraron resultados para tu búsqueda.');
 
-      await conn.adReply(m.chat, '⏳ Buscando imágenes en Pinterest...', null, m);
+      await conn.adReply(m.chat, '⏳ Buscando imágenes en Pinterest...', '', m);
 
       const caption =
          `📌 *PINTEREST*\n` +
