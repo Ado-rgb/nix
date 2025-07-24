@@ -1,51 +1,20 @@
 exports.default = {
    names: ['Kalkulator'],
-   tags: ['tambah', 'kurang', 'kali', 'bagi'],
-   command: ['tambah', 'kurang', 'kali', 'bagi'],
-   start: (m, {
-      conn,
-      prefix,
-      text,
-      command
-   }) => {
-      if (command == 'tambah') {
-         if (!text) return m.reply(`Gunakan dengan cara ${prefix+command} *angka* *angka*\n\n_Contoh_\n\n${prefix+command} 1 2`);
-         var num_one = text.split(' ')[0];
-         var num_two = text.split(' ')[1];
-         if (!num_one) return m.reply(`Gunakan dengan cara ${prefix+command} *angka* *angka*\n\n_Contoh_\n\n${prefix+command} 1 2`);
-         if (!num_two) return m.reply(`Gunakan dengan cara ${prefix+command} *angka* *angka*\n\n_Contoh_\n\n${prefix+command} 1 2`);
-         var nilai_one = Number(num_one);
-         var nilai_two = Number(num_two);
-         m.reply(`${nilai_one + nilai_two}`);
-      } else if (command == 'kurang') {
-         if (!text) return m.reply(`Gunakan dengan cara ${prefix+command} *angka* *angka*\n\n_Contoh_\n\n${prefix+command} 1 2`);
-         var num_one = text.split(' ')[0];
-         var num_two = text.split(' ')[1];
-         if (!num_one) return m.reply(`Gunakan dengan cara ${prefix+command} *angka* *angka*\n\n_Contoh_\n\n${prefix+command} 1 2`);
-         if (!num_two) return m.reply(`Gunakan dengan cara ${prefix+command} *angka* *angka*\n\n_Contoh_\n\n${prefix+command} 1 2`);
-         var nilai_one = Number(num_one);
-         var nilai_two = Number(num_two);
-         m.reply(`${nilai_one - nilai_two}`);
-      } else if (command == 'kali') {
-         if (!text) return m.reply(`Gunakan dengan cara ${prefix+command} *angka* *angka*\n\n_Contoh_\n\n${prefix+command} 1 2`);
-         var num_one = text.split(' ')[0];
-         var num_two = text.split(' ')[1];
-         if (!num_one) return m.reply(`Gunakan dengan cara ${prefix+command} *angka* *angka*\n\n_Contoh_\n\n${prefix+command} 1 2`);
-         if (!num_two) return m.reply(`Gunakan dengan cara ${prefix+command} *angka* *angka*\n\n_Contoh_\n\n${prefix+command} 1 2`);
-         var nilai_one = Number(num_one);
-         var nilai_two = Number(num_two);
-         m.reply(`${nilai_one * nilai_two}`);
-      } else if (command == 'bagi') {
-         if (!text) return m.reply(`Gunakan dengan cara ${prefix+command} *angka* *angka*\n\n_Contoh_\n\n${prefix+command} 1 2`);
-         var num_one = text.split(' ')[0];
-         var num_two = text.split(' ')[1];
-         if (!num_one) return m.reply(`Gunakan dengan cara ${prefix+command} *angka* *angka*\n\n_Contoh_\n\n${prefix+command} 1 2`);
-         if (!num_two) return m.reply(`Gunakan dengan cara ${prefix+command} *angka* *angka*\n\n_Contoh_\n\n${prefix+command} 1 2`);
-         var nilai_one = Number(num_one);
-         var nilai_two = Number(num_two);
-         m.reply(`${nilai_one / nilai_two}`);
-      }
+   tags: ['sumar', 'restar', 'multiplicar', 'dividir'],
+   command: ['sumar', 'restar', 'multiplicar', 'dividir'],
+   start: (m, { prefix, text, command }) => {
+      if (!text) return m.reply(`Uso correcto: ${prefix + command} <número1> <número2>\nEjemplo: ${prefix + command} 5 3`);
+      
+      const [num1, num2] = text.split(' ').map(Number);
+      if (isNaN(num1) || isNaN(num2)) return m.reply(`Solo se aceptan números\nEjemplo: ${prefix + command} 5 3`);
+      
+      let resultado;
+      if (command === 'sumar') resultado = num1 + num2;
+      if (command === 'restar') resultado = num1 - num2;
+      if (command === 'multiplicar') resultado = num1 * num2;
+      if (command === 'dividir') resultado = num2 !== 0 ? num1 / num2 : 'No se puede dividir entre 0';
+
+      m.reply(`「📊」Resultado: *${resultado}*`);
    },
-   limit: true,
    premium: false
 };
