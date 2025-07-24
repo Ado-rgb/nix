@@ -18,6 +18,5 @@ exports.default = {
       ['Siguiente', `${prefix}${command} ${text}`]
     ]);
   },
-  limit: 2,
   premium: false
 };
