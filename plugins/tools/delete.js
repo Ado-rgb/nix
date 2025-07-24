@@ -6,5 +6,5 @@ exports.default = {
       if (!m.quoted) return m.reply('Responde al mensaje que quieres borrar.');
       await conn.removeMessage(m);
    },
-   premium: true
+   premium: false
 };
