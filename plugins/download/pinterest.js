@@ -2,23 +2,24 @@ exports.default = {
    names: ['Downloader'],
    tags: ['pinterest'],
    command: ['pinterest', 'pin'],
-   start: async (m, {
-      conn,
-      text,
-      prefix,
-      command,
-      Format
-   }) => {
-      if (!text) return m.reply(`contoh: ${prefix+command} Input Query`)
-      const image = await Format.Scraper.pinterest(text);   
-      if (image.length == 0) return m.reply('Tidak di temukan');
-      conn.adReply(m.chat, loading, cover, m);
-      const caption = `${head('𝐏𝐈𝐍𝐓𝐄𝐑𝐄𝐒𝐓')}\n` +
-      `${java} Result From ${text}`
-      conn.sendButton(m.chat, caption, pickRandom(image), m, [ 
-         ['Next', '.pinterest ' + text]
-      ])
+   start: async (m, { conn, text, prefix, command, Format }) => {
+      if (!text) return m.reply(
+         `❌ Uso incorrecto\nEjemplo:\n${prefix + command} paisaje hermoso`
+      );
+
+      const images = await Format.Scraper.pinterest(text);
+
+      if (!images.length) return m.reply('⚠️ No se encontraron resultados para tu búsqueda.');
+
+      await conn.adReply(m.chat, '⏳ Buscando imágenes en Pinterest...', null, m);
+
+      const caption =
+         `📌 *PINTEREST*\n` +
+         `🔎 Resultados para: ${text}`;
+
+      conn.sendButton(m.chat, caption, pickRandom(images), m, [
+         ['Siguiente', `${prefix}${command} ${text}`]
+      ]);
    },
-   limit: 2,
    premium: false
-}
+};
