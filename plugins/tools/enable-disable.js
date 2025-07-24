@@ -1,302 +1,214 @@
 const { restoreMongo } = require('../../lib/src/cloud/mongo-db.js');
 const { restoreGithub } = require('../../lib/src/cloud/github-db.js');
+
 exports.default = {
    names: ['Tools'],
    tags: ['on', 'off'],
    command: ['on', 'off', 'enable', 'disable'],
-   start: async (m, {
-      conn,
-      text,
-      prefix,
-      command,
-      Format,
-      isOwner,
-      isAdmins,
-      isPremium,
-      groupName,
-   }) => {
-      const cmd_on = ['on', 'enable']
-      const cmd_off = ['off', 'disable']
-      const owner_admin = isOwner || isAdmins
-      const v = `${prefix + command} `
-      let caption = `*List Options ${command}*\n*Contoh:* \n\n`
-      caption += v + `welcome \n`
-      caption += v + `antilink \n`
-      caption += v + `viewonce / once \n`
-      caption += v + `autodl / autodown \n`
-      caption += v + `autobackup \n`
-      caption += v + `antitoxic / toxic \n`
-      caption += v + `antiphoto \n`
-      caption += v + `antibot \n`
-      caption += v + `anticall \n`
-      caption += v + `autoreadsw / readsw\n`
-      caption += v + `autobio / bio \n`
-      caption += v + `autosticker / sticker\n`
-      caption += v + `antispam / spam \n`
-      caption += v + `antitagsw \n`
-      caption += v + `chat_ai / ai \n`
-      caption += v + `hd / remini\n`
-      caption += v + `sholat / autosholat\n`
-      caption += v + `blockpc / autoblockpc`
+   start: async (m, { conn, text, prefix, command, Format, isOwner, isAdmins, isPremium, groupName }) => {
+      const cmd_on = ['on', 'enable'];
+      const cmd_off = ['off', 'disable'];
+      const owner_admin = isOwner || isAdmins;
+
+      let caption = `*Opciones disponibles para ${command}*\n\n`;
+      caption += `• ${prefix + command} welcome\n`;
+      caption += `• ${prefix + command} antilink\n`;
+      caption += `• ${prefix + command} viewonce / once\n`;
+      caption += `• ${prefix + command} autodl / autodown\n`;
+      caption += `• ${prefix + command} autobackup\n`;
+      caption += `• ${prefix + command} antitoxic / toxic\n`;
+      caption += `• ${prefix + command} antiphoto\n`;
+      caption += `• ${prefix + command} antibot\n`;
+      caption += `• ${prefix + command} anticall\n`;
+      caption += `• ${prefix + command} autoreadsw / readsw\n`;
+      caption += `• ${prefix + command} autobio / bio\n`;
+      caption += `• ${prefix + command} autosticker / sticker\n`;
+      caption += `• ${prefix + command} antispam / spam\n`;
+      caption += `• ${prefix + command} antitagsw\n`;
+      caption += `• ${prefix + command} chat_ai / ai\n`;
+      caption += `• ${prefix + command} hd / remini\n`;
+      caption += `• ${prefix + command} sholat / autosholat\n`;
+      caption += `• ${prefix + command} blockpc / autoblockpc`;
+
       if (!text) return m.reply(caption);
+
+      const on = cmd_on.includes(command);
+      const off = cmd_off.includes(command);
+
       switch (text.toLowerCase()) {
-         case 'welcome': {
+         case 'welcome':
             if (!m.isGroup) return m.reply(mess.OnlyGroup);
             if (!owner_admin) return m.reply(mess.GrupAdmin);
-            if (cmd_on.includes(command)) {
-               db.chats[m.chat].welcome = true
-               m.reply(`Welcome Berhasil Di Nyalakan Di Group ${groupName}`)
-            } else if (cmd_off.includes(command)) {
-               db.chats[m.chat].welcome = false
-               m.reply(`Welcome Berhasil Di Matikan Di Group ${groupName}`)
-            }
-         }
-         break
-         case 'antilink': {
+            db.chats[m.chat].welcome = on;
+            m.reply(`✔ Bienvenida ${on ? 'activada' : 'desactivada'} en el grupo ${groupName}`);
+            break;
+
+         case 'antilink':
             if (!m.isGroup) return m.reply(mess.OnlyGroup);
             if (!owner_admin) return m.reply(mess.GrupAdmin);
-            if (cmd_on.includes(command)) {
-               db.chats[m.chat].antilink = true
-               m.reply(`Antilink berhasil diaktifkan di grup ${groupName}`);
-            } else if (cmd_off.includes(command)) {
-               db.chats[m.chat].antilink = false
-               m.reply(`Antilink berhasil matikan di grup ${groupName}`);
-            }
-         }
-         break
+            db.chats[m.chat].antilink = on;
+            m.reply(`✔ Antilink ${on ? 'activado' : 'desactivado'} en el grupo ${groupName}`);
+            break;
+
          case 'viewonce':
-         case 'once': {
+         case 'once':
             if (!m.isGroup) return m.reply(mess.OnlyGroup);
             if (!owner_admin) return m.reply(mess.GrupAdmin);
-            if (cmd_on.includes(command)) {
-               db.chats[m.chat].viewOnce = true
-               m.reply(`View Once berhasil diaktifkan di grup ${groupName}`);
-            } else if (cmd_off.includes(command)) {
-               db.chats[m.chat].viewOnce = false
-               m.reply(`View Once berhasil dimatikan di grup ${groupName}`);
-            }
-         }
-         break
-         case 'anticall': {
+            db.chats[m.chat].viewOnce = on;
+            m.reply(`✔ Mensajes de una sola vista ${on ? 'activados' : 'desactivados'} en el grupo ${groupName}`);
+            break;
+
+         case 'anticall':
             if (!isOwner) return m.reply(mess.OnlyOwner);
-            if (cmd_on.includes(command)) {
-               save.global('global.anticall = false', 'global.anticall = true');
-               m.reply('anti call berhasil di aktifkan')
-            } else if (cmd_off.includes(command)) {
-               save.global('global.anticall = true', 'global.anticall = false');
-               m.reply('anti call database berhasil di matikan')
-            }
-         }
-         break
+            save.global(`global.anticall = ${!on}`, `global.anticall = ${on}`);
+            m.reply(`✔ Anti-llamadas ${on ? 'activado' : 'desactivado'}`);
+            break;
+
          case 'blockpc':
-         case 'autoblockpc': {
+         case 'autoblockpc':
             if (!isOwner) return m.reply(mess.OnlyOwner);
-            if (cmd_on.includes(command)) {
-               if (global.group_mode) return m.reply('Mode group sedang aktif tidak bisa menyalakan, matikan terlebih dahulu .setgcmode off');
-               db.settings.block_pc = true
-               m.reply('auto block private chat berhasil di aktifkan')
-            } else if (cmd_off.includes(command)) {
-               db.settings.block_pc = false
-               m.reply('auto block private chat berhasil di matikan')
-            }
-         }
-         break
+            if (on && global.group_mode) return m.reply('❌ El modo grupo está activo. Desactívalo con .setgcmode off');
+            db.settings.block_pc = on;
+            m.reply(`✔ Bloqueo de chats privados ${on ? 'activado' : 'desactivado'}`);
+            break;
+
          case 'sholat':
-         case 'autosholat': {
+         case 'autosholat':
             if (!isOwner) return m.reply(mess.OnlyOwner);
-            if (cmd_on.includes(command)) {
-               save.global('global.auto_sholat = false', 'global.auto_sholat = true');
-               m.reply('auto sholat berhasil di aktifkan')
-            } else if (cmd_off.includes(command)) {
-               save.global('global.auto_sholat = true', 'global.auto_sholat = false');
-               m.reply('auto sholat berhasil di matikan')
-            }
-         }
-         break
+            save.global(`global.auto_sholat = ${!on}`, `global.auto_sholat = ${on}`);
+            m.reply(`✔ Auto Sholat ${on ? 'activado' : 'desactivado'}`);
+            break;
+
          case 'autodl':
-         case 'autodown': {
+         case 'autodown':
             if (!isOwner) return m.reply(mess.OnlyOwner);
-            if (cmd_on.includes(command)) {
-               db.settings.auto_down = true
-               m.reply(`auto download berhasil diaktifkan`);
-            } else if (cmd_off.includes(command)) {
-               db.settings.auto_down = false
-               m.reply(`auto download berhasil matikan`);
-            }
-         }
-         break
+            db.settings.auto_down = on;
+            m.reply(`✔ Auto descarga ${on ? 'activada' : 'desactivada'}`);
+            break;
+
          case 'autosticker':
          case 'sticker':
-         case 'stiker': {
+         case 'stiker':
             if (!isOwner) return m.reply(mess.OnlyOwner);
-            if (cmd_on.includes(command)) {
-               db.settings.auto_sticker = true
-               m.reply(`auto sticker berhasil diaktifkan\nsekarang kamu dapat membuat stiker hanya dengan mengirim foto`);
-            } else if (cmd_off.includes(command)) {
-               db.settings.auto_sticker = false
-               m.reply(`auto sticker berhasil matikan`);
-            }
-         }
-         break
+            db.settings.auto_sticker = on;
+            m.reply(`✔ Auto sticker ${on ? 'activado' : 'desactivado'}`);
+            break;
+
          case 'antitoxic':
-         case 'toxic': {
+         case 'toxic':
             if (!m.isGroup) return m.reply(mess.OnlyGroup);
             if (!owner_admin) return m.reply(mess.GrupAdmin);
-            if (cmd_on.includes(command)) {
-               db.chats[m.chat].antiToxic = true
-               m.reply(`Anti Toxic berhasil diaktifkan di grup ${groupName}`);
-            } else if (cmd_off.includes(command)) {
-               db.chats[m.chat].antiToxic = false
-               m.reply(`Anti Toxic berhasil dimatikan di grup ${groupName}`);
-            }
-         }
-         break
-         case 'antiphoto': {
+            db.chats[m.chat].antiToxic = on;
+            m.reply(`✔ Anti-Toxic ${on ? 'activado' : 'desactivado'} en el grupo ${groupName}`);
+            break;
+
+         case 'antiphoto':
             if (!m.isGroup) return m.reply(mess.OnlyGroup);
             if (!owner_admin) return m.reply(mess.GrupAdmin);
-            if (cmd_on.includes(command)) {
-               db.chats[m.chat].antiPhoto = true
-               m.reply(`Anti Photo berhasil diaktifkan di grup ${groupName}`);
-            } else if (cmd_off.includes(command)) {
-               db.chats[m.chat].antiPhoto = false
-               m.reply(`Anti Photo berhasil dimatikan di grup ${groupName}`);
-            }
-         }
-         break
-         case 'antibot': {
+            db.chats[m.chat].antiPhoto = on;
+            m.reply(`✔ Anti-fotos ${on ? 'activado' : 'desactivado'} en el grupo ${groupName}`);
+            break;
+
+         case 'antibot':
             if (!m.isGroup) return m.reply(mess.OnlyGroup);
             if (!owner_admin) return m.reply(mess.GrupAdmin);
-            if (cmd_on.includes(command)) {
-               db.chats[m.chat].antiBot = true
-               m.reply(`Anti Bot berhasil diaktifkan di grup ${groupName}`);
-            } else if (cmd_off.includes(command)) {
-               db.chats[m.chat].antiBot = false
-               m.reply(`Anti Bot berhasil dimatikan di grup ${groupName}`);
-            }
-         }
-         break
-         case 'antitagsw': {
+            db.chats[m.chat].antiBot = on;
+            m.reply(`✔ Anti-bots ${on ? 'activados' : 'desactivados'} en el grupo ${groupName}`);
+            break;
+
+         case 'antitagsw':
             if (!m.isGroup) return m.reply(mess.OnlyGroup);
             if (!owner_admin) return m.reply(mess.GrupAdmin);
-            if (cmd_on.includes(command)) {
-               db.chats[m.chat].tagsw = true
-               m.reply(`Anti Tag SW berhasil diaktifkan di grup ${groupName}`);
-            } else if (cmd_off.includes(command)) {
-               db.chats[m.chat].tagsw = false
-               m.reply(`Anti Tag SW berhasil dimatikan di grup ${groupName}`);
-            }
-         }
-         break
+            db.chats[m.chat].tagsw = on;
+            m.reply(`✔ Anti-tags SW ${on ? 'activado' : 'desactivado'} en el grupo ${groupName}`);
+            break;
+
          case 'hd':
-         case 'remini': {
+         case 'remini':
             if (!m.isGroup) return m.reply(mess.OnlyGroup);
             if (!isOwner) return m.reply(mess.OnlyOwner);
-            if (cmd_on.includes(command)) {
-               db.chats[m.chat].hd = true
-               m.reply(`HD / Remini berhasil diaktifkan di grup ${groupName}`);
-            } else if (cmd_off.includes(command)) {
-               db.chats[m.chat].hd = false
-               m.reply(`HD / Remini berhasil dimatikan di grup ${groupName}`);
-            }
-         }
-         break
+            db.chats[m.chat].hd = on;
+            m.reply(`✔ HD/Remini ${on ? 'activado' : 'desactivado'} en el grupo ${groupName}`);
+            break;
+
          case 'autoreadsw':
-         case 'readsw': {
+         case 'readsw':
             if (!isOwner) return m.reply(mess.OnlyOwner);
-            if (cmd_on.includes(command)) {
-               db.settings.readsw = true
-               m.reply(`auto readsw berhasil diaktifkan`);
-            } else if (cmd_off.includes(command)) {
-               db.settings.readsw = false
-               m.reply(`auto readsw berhasil dimatikan`);
-            }
-         }
-         break
+            db.settings.readsw = on;
+            m.reply(`✔ Auto lectura de estados ${on ? 'activada' : 'desactivada'}`);
+            break;
+
          case 'autobio':
-         case 'bio': {
+         case 'bio':
             if (!isOwner) return m.reply(mess.OnlyOwner);
-            if (cmd_on.includes(command)) {
-               db.settings.autobio = true
-               m.reply(`auto bio/status berhasil diaktifkan`);
-            } else if (cmd_off.includes(command)) {
-               db.settings.autobio = false
+            db.settings.autobio = on;
+            if (off) {
                await Format.sleep(3000);
-               await conn.updateProfileStatus(' ‎');
-               m.reply(`auto bio/status berhasil dimatikan`);
+               await conn.updateProfileStatus(' ‎');
             }
-         }
-         break
+            m.reply(`✔ Auto bio ${on ? 'activado' : 'desactivado'}`);
+            break;
+
          case 'antispam':
-         case 'spam': {
+         case 'spam':
             if (!isOwner) return m.reply(mess.OnlyOwner);
-            if (cmd_on.includes(command)) {
-               db.settings.antispam = true
-               m.reply(`anti spam berhasil diaktifkan`);
-            } else if (cmd_off.includes(command)) {
-               db.settings.antispam = false
-               m.reply(`anti spam berhasil dimatikan`);
-            }
-         }
-         break
+            db.settings.antispam = on;
+            m.reply(`✔ Anti-spam ${on ? 'activado' : 'desactivado'}`);
+            break;
+
          case 'chat_ai':
-         case 'ai': {
-            if (!m.isGroup && !isPremium) return m.reply(mess.premium)
+         case 'ai':
+            if (!m.isGroup && !isPremium) return m.reply(mess.premium);
             if (m.isGroup && !owner_admin) return m.reply(mess.GrupAdmin);
-            if (!m.isGroup && cmd_on.includes(command)) {
-               db.users[m.sender].chat_ai = true
-               m.reply(`Auto Chat AI Berhasil Di Nyalakan`);
-            } else if (m.isGroup && cmd_on.includes(command)) {
-               db.chats[m.chat].chat_ai = true
-               m.reply(`Auto Chat AI Berhasil Di Nyalakan Di Group ${groupName}`);
-            } else if (!m.isGroup && cmd_off.includes(command)) {
-               db.users[m.sender].chat_ai = false
-               m.reply(`Auto Chat AI Berhasil Di Matikan`);
-            } else if (m.isGroup && cmd_off.includes(command)) {
-               db.chats[m.chat].chat_ai = false
-               m.reply(`Auto Chat AI Berhasil Di Matikan Di Group ${groupName}`);
+
+            if (!m.isGroup) {
+               db.users[m.sender].chat_ai = on;
+               m.reply(`✔ Chat AI ${on ? 'activado' : 'desactivado'} para ti`);
+            } else {
+               db.chats[m.chat].chat_ai = on;
+               m.reply(`✔ Chat AI ${on ? 'activado' : 'desactivado'} en el grupo ${groupName}`);
             }
-         }
-         break
-      };
-      if (text == 'autobackup' || text == 'backup' || text.split(" ")[1]) {
+            break;
+      }
+
+      if (['autobackup', 'backup'].includes(text.split(" ")[0]) || text.split(" ")[1]) {
          if (!isOwner) return m.reply(mess.OnlyOwner);
          const pick = text.split(" ")[1];
-         if (!pick) throw `masukan tempat database yang di gunakan contoh ${prefix+command} mongo \nbaru tersedia mongo dan github`;
-         if (!['mongo', 'github'].includes(pick)) throw 'hanya baru ada mongo dan github saja sekarang';
-         if (cmd_on.includes(command) && pick === 'mongo') {
-            if (backup_mongo) throw 'autobackup monggo audah di aktifkan atau di nyalakan sebelum nya untuk cek ketik .status';
-            m.reply('menyalakan auto backup db ke mongo...')
+         if (!pick) return m.reply(`Debes indicar el servicio. Ejemplo:\n${prefix + command} mongo\nServicios disponibles: mongo, github`);
+
+         if (!['mongo', 'github'].includes(pick)) return m.reply('❌ Solo están disponibles mongo y github');
+
+         if (on && pick === 'mongo') {
+            if (backup_mongo) return m.reply('⚠ Auto-backup MongoDB ya está activado');
+            m.reply('Activando auto-backup a MongoDB...');
             const response = await restoreMongo();
-            if (!response) {
-               return response
-            } else {
-               await save.global('global.backup_mongo = false', 'global.backup_mongo = true');
-               await m.reply('auto backup monggo database berhasil di aktifkan\nrestarting...')
-               reset()
-            }
-         } else if (cmd_off.includes(command) && pick === 'mongo') {
-            if (!backup_mongo) throw 'autobackup monggo audah di nonaktifkan atau dimatikan sebelumnya\nuntuk cek ketik .status';
-            await m.reply('mematikan auto backup db ke mongo...')
+            if (!response) return response;
+            await save.global('global.backup_mongo = false', 'global.backup_mongo = true');
+            m.reply('✔ Auto-backup MongoDB activado. Reiniciando...');
+            reset();
+         } else if (off && pick === 'mongo') {
+            if (!backup_mongo) return m.reply('⚠ Auto-backup MongoDB ya está desactivado');
+            m.reply('Desactivando auto-backup a MongoDB...');
             await save.global('global.backup_mongo = true', 'global.backup_mongo = false');
-            await m.reply('auto backup monggo database berhasil di matikan\nrestarting...')
-            reset()
-         } else if (cmd_on.includes(command) && pick === 'github') {
-            if (backup_github) throw 'autobackup github sudah di aktifkan atau di nyalakan sebelum nya untuk cek ketik .status';
-            m.reply('menyalakan auto backup db ke cloud github...')
+            m.reply('✔ Auto-backup MongoDB desactivado. Reiniciando...');
+            reset();
+         } else if (on && pick === 'github') {
+            if (backup_github) return m.reply('⚠ Auto-backup GitHub ya está activado');
+            m.reply('Activando auto-backup a GitHub...');
             const data = await restoreGithub();
             if (!data.status) {
-               await m.reply('Gagal Menyalakan autobackup github')
-               throw data
-            } else if (data.status) {
-               await save.global('global.backup_github = false', 'global.backup_github = true')
-               return await m.reply('auto backup github database berhasil di aktifkan\nrestarting...'), reset()  
-            };         
-         } else if (cmd_off.includes(command) && pick === 'github') {
-            if (!backup_github) throw 'autobackup github sudah di nonaktifkan atau dimatikan sebelumnya\nuntuk cek ketik .status';
-            await m.reply('mematikan auto backup db ke cloud github...')
+               m.reply('❌ Error al activar auto-backup GitHub');
+               throw data;
+            }
+            await save.global('global.backup_github = false', 'global.backup_github = true');
+            m.reply('✔ Auto-backup GitHub activado. Reiniciando...');
+            reset();
+         } else if (off && pick === 'github') {
+            if (!backup_github) return m.reply('⚠ Auto-backup GitHub ya está desactivado');
+            m.reply('Desactivando auto-backup a GitHub...');
             save.global('global.backup_github = true', 'global.backup_github = false');
-            return m.reply('auto backup database github berhasil di matikan')
+            m.reply('✔ Auto-backup GitHub desactivado');
          }
-      } 
+      }
    }
-}
+};
